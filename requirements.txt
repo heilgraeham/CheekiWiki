@@ -14,4 +14,5 @@ selenium
 xvfbwrapper
 flask_login
 flask_wtf
+flask_socketio
 Flask-Bootstrap
