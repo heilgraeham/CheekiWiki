@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Readme
 
 [![Linux build status](https://travis-ci.org/alexanderjulo/wiki.svg?branch=master)](https://travis-ci.org/alexanderjulo/wiki)
@@ -53,3 +54,7 @@ If you plan on helping with the development of this project you can clone the re
 ## Contributors
 
 Thank you very much to my two top contributers @walkerh and @traeblain. You two have posted so many issues and especially solved them with so many pull requests, that I sometimes lose track of it! :)
+=======
+# CheekiWiki
+CSC 440 Final Project
+>>>>>>> 637a901c30cb5b8c41fa4b23dc895b64c8a08352
