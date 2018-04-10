@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block script %}
+<script>
+
+</script>
+{% endblock script %}
+{% block title -%}
+Wiki Editor
+{%- endblock title %}
+
+{% block content %}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#editor" data-toggle="tab">Editor</a></li>
+	<li><a href="#preview" data-toggle="tab" id="previewlink">Preview</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="editor">
+		<form method="post" class="form">
+			{{ form.hidden_tag() }}
+			{{ input(form.title, placeholder="Title", class="span7", autocomplete="off") }}
+			{{ input(form.body, placeholder="Markdown", class="span7", rows="20") }}
+			{{ input(form.tags, placeholder="Tags (comma separated)", class="span7", autocomplete="off") }}
+			<div class="form-actions">
+        <div class="pull-left">
+          <a class="btn" href="#preview" id="previewbtn">Preview</a>
+        </div>
+				<div class="pull-right">
+          <a class="btn" id="btn-save" href="{{ url_for('wiki.display', url=page.url) }}">Cancel</a>
+					<button class="btn btn-success" type="submit">Save</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="tab-pane" id="preview"></div>
+</div>
+
+{% endblock content %}
+
+{% block sidebar %}
+<input id="collab-btn" type="button" class="btn btn-primary" value="Collaborate">
+<br />
+<br />
+
+<h3>Editor How-To</h3>
+<p>This editor is <a href="http://daringfireball.net/projects/markdown/">markdown</a> featured.</p>
+<pre><code>* I
+* am
+* a
+* list</code></pre>
+Turns into:
+<ul>
+<li>I</li>
+<li>am</li>
+<li>a</li>
+<li>list</li>
+</ul>
+<p><code>**bold** and *italics*</code> turn into <strong>bold</strong> and <em>italics</em>. Very easy!</p>
+<p>Create links with <code>[NoTube](http://www.notube.com)</code>. They turn into <a href="http://www.notube.com">NoTube</a>.</p>
+<p>Headers are as follows:</p>
+<pre><code># Level 1
+## Level 2
+### Level 3</code></pre>
+<p></p>
+
+{% endblock sidebar %}
+
+{% block postscripts -%}
+{{ super() }}
+$('#previewlink').on('click', function() {
+	var $form = $('.form');
+  var $inputs = $form.find('input, textarea, button');
+  var $pre = $('#preview');
+  var bodycontent = 'title: preview\n\n' + $form.find('textarea').val();
+  $inputs.prop('disabled', true);
+  $pre.removeClass('alert').removeClass('alert-error').html("Loading...");
+  $.ajax({
+    url: "{{ url_for('wiki.preview') }}",
+    type: "POST",
+    data: { body: bodycontent },
+    success: function(msg) {
+      $pre.html(msg);
+      console.log(msg);
+    },
+    error: function() {
+			$pre.addClass('alert').addClass('alert-error');
+      $pre.html('There was a problem with the preview.');
+    },
+    complete: function() {
+      $inputs.prop('disabled', false);
+    }
+  });
+});
+$('#previewbtn').on('click', function(event) {
+	event.preventDefault();
+	$('#previewlink').click();
+});
+
+$(document).ready(function () {
+
+    var socket;
+    console.log(socket);
+    var room = window.location.href;
+
+    $('#collab-btn').click(function(){
+        if ($(this).val() === 'Collaborate'){
+            connect();
+            $(this).val('Disconnect');
+        }else {
+            $(this).val('Collaborate');
+            socket.emit('exit', room);
+            socket.disconnect('close');
+        }
+    });
+
+    function connect () {
+
+        socket = io.connect('http://'+location.host, {'forceNew':true});
+        socket.emit('join', location.host, room);
+
+        socket.on('client_body', function (msg) {
+            document.getElementById('body').value=msg;
+        });
+
+        socket.on('client_title', function (msg) {
+            document.getElementById('title').value=msg;
+        });
+
+        socket.on('client_tags', function (msg) {
+            document.getElementById('tags').value=msg;
+        });
+
+        //user edited body section
+        $('#body').on('input', function () {
+            var character = $(this).val();
+            socket.emit('editor_body', character, room);
+        });
+
+        //user editied title bar
+        $('#title').on('input', function (){
+            var character = $('#title').val();
+            socket.emit('editor_title', character, room);
+        });
+
+        //user edited tags input section
+        $('#tags').on('input', function () {
+            var character = $('#tags').val();
+            socket.emit('editor_tags', character, room);
+        });
+    }
+});
+{%- endblock postscripts %}

@@ -1,0 +1,25 @@
+{
+  "test": {
+    "active": false, 
+    "authentication_method": "cleartext", 
+    "password": "0.284779669707", 
+    "authenticated": true, 
+    "roles": [
+      "unit test"
+    ]
+  }, 
+  "name": {
+    "active": false, 
+    "authentication_method": "cleartext", 
+    "password": "1234", 
+    "authenticated": true, 
+    "roles": []
+  }, 
+  "connor": {
+    "active": true, 
+    "authentication_method": "cleartext", 
+    "password": "powers", 
+    "authenticated": true, 
+    "roles": []
+  }
+}
