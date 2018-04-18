@@ -19,8 +19,10 @@ from wiki.web.forms import LoginForm
 from wiki.web.forms import SearchForm
 from wiki.web.forms import URLForm
 from wiki.web import current_wiki
-from wiki.web import current_users
 from wiki.web.user import protect
+from wiki.web import current_users
+from user import User, UserManager
+import os
 
 
 bp = Blueprint('wiki', __name__);
@@ -132,11 +134,15 @@ def search():
 def user_login():
     form = LoginForm()
     if form.validate_on_submit():
+        if request.form.get('login', None):
+            form.sign_in(form.name.data, form.password.data)
+        elif request.form.get('create', None):
+            form.create_user(form.name.data, form.password.data)
         user = current_users.get_user(form.name.data)
         login_user(user)
         user.set('authenticated', True)
         flash('Login successful.', 'success')
-        return redirect(request.args.get("next") or url_for('wiki.index'))
+        return redirect(url_for('wiki.index'))
     return render_template('login.html', form=form)
 
 

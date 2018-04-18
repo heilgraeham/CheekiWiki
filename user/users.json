@@ -1,13 +1,4 @@
 {
-  "test": {
-    "active": false, 
-    "authentication_method": "cleartext", 
-    "password": "0.284779669707", 
-    "authenticated": true, 
-    "roles": [
-      "unit test"
-    ]
-  }, 
   "name": {
     "active": false, 
     "authentication_method": "cleartext", 
@@ -15,11 +6,11 @@
     "authenticated": true, 
     "roles": []
   }, 
-  "connor": {
+  "test@gmail.com": {
     "active": true, 
     "authentication_method": "cleartext", 
-    "password": "powers", 
-    "authenticated": true, 
+    "password": "123456", 
+    "authenticated": false, 
     "roles": []
   }
 }

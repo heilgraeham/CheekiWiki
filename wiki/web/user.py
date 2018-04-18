@@ -140,6 +140,8 @@ def check_hashed_password(password, salted_hash):
 def protect(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
+        print(current_user.__name__)
+        print(current_user.is_authenticated)
         if current_app.config.get('PRIVATE') and not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
         return f(*args, **kwargs)

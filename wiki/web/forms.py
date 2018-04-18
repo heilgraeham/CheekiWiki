@@ -9,11 +9,12 @@ from wtforms import TextAreaField
 from wtforms import PasswordField
 from wtforms.validators import InputRequired
 from wtforms.validators import ValidationError
-
 from wiki.core import clean_url
 from wiki.web import current_wiki
-from wiki.web import current_users
-
+import pyrebase
+from user import UserManager
+from flask import current_app
+import json
 
 class URLForm(Form):
     url = TextField('', [InputRequired()])
@@ -44,14 +45,21 @@ class LoginForm(Form):
     name = TextField('', [InputRequired()])
     password = PasswordField('', [InputRequired()])
 
-    def validate_name(form, field):
-        user = current_users.get_user(field.data)
-        if not user:
-            raise ValidationError('This username does not exist.')
+    firebase = pyrebase.initialize_app(json.load(open('user/cheekiwiki-firebase-admin.json')))
 
-    def validate_password(form, field):
-        user = current_users.get_user(form.name.data)
-        if not user:
+    auth = firebase.auth()
+
+    def sign_in(self, user, password):
+        response = self.auth.sign_in_with_email_and_password(user, password)
+        if response.get("idToken"):
+            self.retain_user(user, password)
             return
-        if not user.check_password(field.data):
-            raise ValidationError('Username and password do not match.')
+
+    def create_user(self, user, password):
+        response = self.auth.create_user_with_email_and_password(user, password)
+        if response.get("idToken"):
+            self.retain_user(user, password)
+            return
+
+    def retain_user(self, user, password):
+        UserManager(current_app.config['USER_DIR']).add_user(user, password, True, [], None)

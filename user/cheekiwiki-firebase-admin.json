@@ -1,12 +1,9 @@
 {
-  "type": "service_account",
-  "project_id": "cheekiwiki-199920",
-  "private_key_id": "f12502f075b0fd417431616411193901324a987d",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDBsxkaQOrKYOEI\njNwEn0bXst1sDZmBz78B3E46SiWplwy3MPErVg4VNzVAxBTSfEdreL/CnuxVSKoz\n4hcayyLZesoTbuo9jdmJ8Bv3TuakStahlVbin3vb9IBi46+meq97d5brnbXFOFnI\nzFGfcwMLvEVKT3T5BO1a1mcHeqFudv7qcTKQMFg4JVNYygu4efdH7EY6u7KlZ+7D\nI9JRYREtvF5MQw3pCLfJ6+R9uNDtaWh6wfiSQlRSRgjTE7B5vKmZAAG88B8lw8fI\n+gBXmJphVUrfyAwQGKl2WmdmDzAB0gNXXNEZ8usnzqX15AbcEe6n8D7U9hLC787H\n5qvRhihBAgMBAAECggEAAheoJV9I7wPDbg2rHDdcERkndtT9tuoZjGqkx2DC8+xN\n38gq/IWPcVqSVh5JIhwDu64lOogH3iDq1mSsdKCP6kvrGTEspXKb+F9RNsVv2Lu2\nil5HEwObb3cSbIkMhg+pb+fNC/uBI8/GyeRVw9Nix6WIfUXG/gA38/wktr8kDZHd\nhi1fsrw/VoDWjdz+r+sg1QZXE1jw0beYBHf+I2OEi4chogrTL309tyCMIC9R0wok\nt61OUlZFyAxbUHRhS/6qsg1TFR53on6bhflCwG4Hoj72pNydwSGqEIL/Wm2qRHaM\n1whqD8QXJ8C9kso6BhHiyF9JTH7qi6vknS+lR1ztAQKBgQDwwxofVn0dkoBk73lY\nGqIPS53b/Xc3WdcUCJeCfsIQUUDTaP3Gg24/fJZ35qX212DJMTi/o/BH4tfC1EyI\nyosO4e4fXPkOtj1ZH5vxsjdEtFIlnct4EnI7HNLEShgZEQY6UrIKnIwYDfrf9h1Q\ny3iEatYMoEy+p5zEot0S4Y11AQKBgQDN9Xm1wvutI+fGEgPQWySbIOhPT5uDCnaJ\nRALaAqWgaia+ik7l0bdY1tRosT31caCuOSXfJm/iKIRxd6uk6bx4ppNdLWsWZLDo\nqbSUkDnm/KNE9iLX/B69tCnDtugbs9XZ+O4oeH+4GWhCLVfSc3afywCESjk6ITvl\nNDojhQxzQQKBgBx+On0y8yOozuEjJi0zGbLNtCTw3kcCrt2EFsouzjC4LP/YERCJ\nRWbmC7is5z9LRf0JgjnL4Qfg5L/9+ADIV6SvQEsd6avADYqanw3/lWLgJEinYAkZ\nxcMRKjBoxGlTBnWoi8GNvVarcOFIcze4nM6vBh4AapS1qWvsClXNs7wBAoGAE1SR\nysx1IKf5De8M6pZTVjf9dcwr9V2bCIEYn2uWLfsojcOfahSH18+5+eWAwjOa+B8m\n/c22vIw++gNYWc8SQGSp+hnULjLfI8chyrvKo3JcxJExbgIcxINPVC4rlMYJMT8a\n4zOEETxZO7TTxE3P+WltL/1jZ6BM5dNEDadkJsECgYBFsiQNL/N9wI1Qudr862V/\n9gR44WJLvFAdZDk0baHgkCeYJWfN6fNhAwDIVw7DhsEN+UYpJXHmENrsA5XQfhT2\nHY44HISHZwUuWLSMir5BJWxP8kdUlnYGqUo77PlqTmbOB9WB5/ZUA8xNdScREoVS\nhRXpz5OcoDjj3+U1H2bReA==\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-ic2ri@cheekiwiki-199920.iam.gserviceaccount.com",
-  "client_id": "101268639205382136005",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://accounts.google.com/o/oauth2/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ic2ri%40cheekiwiki-199920.iam.gserviceaccount.com"
+  "apiKey": "AIzaSyDHv9XrBPBpwtQVzug5ZeeDEtilzW19DRY",
+  "authDomain": "csc440-89d50.firebaseapp.com",
+  "databaseURL": "https://csc440-89d50.firebaseio.com",
+  "projectId": "csc440-89d50",
+  "storageBucket": "csc440-89d50.appspot.com",
+  "messagingSenderId": "365127793006"
 }
+
