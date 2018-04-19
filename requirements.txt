@@ -17,8 +17,5 @@ flask_wtf
 flask_socketio
 Flask-Bootstrap
 pyrebase
-xhtml2pdf
-wkhtmltopdf
-pdfkit
 weasyprint
 flask_weasyprint

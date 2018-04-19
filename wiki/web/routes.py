@@ -2,9 +2,8 @@
     Routes
     ~~~~~~
 """
-import os
 
-from flask import Blueprint, send_file
+from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import render_template
@@ -14,6 +13,7 @@ from flask_login import current_user
 from flask_login import login_required
 from flask_login import login_user
 from flask_login import logout_user
+from flask_weasyprint import HTML, render_pdf
 
 from wiki.core import Processor
 from wiki.web import current_users
@@ -23,8 +23,6 @@ from wiki.web.forms import LoginForm
 from wiki.web.forms import SearchForm
 from wiki.web.forms import URLForm
 from wiki.web.user import protect
-
-from flask_weasyprint import HTML, render_pdf
 
 bp = Blueprint('wiki', __name__)
 
@@ -179,10 +177,10 @@ def user_delete(user_id):
 
 @bp.route('/topdf/<path:url>')
 def topdf(url):
-    # Make a PDF from another view
+
     page = current_wiki.get_or_404(url)
     html = page.html
-
+    # Make and render a PDF from HTML of the page
     return render_pdf(HTML(string=html))
 
 """
