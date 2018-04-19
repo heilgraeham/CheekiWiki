@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block script %}
+<script>
+
+</script>
+{% endblock script %}
+{% block title %}Select tags for image{% endblock title %}
+{% block content %}
+<div class="tab-content">
+    <img src="/images/{{ form.filename }}">
+    <p>Tags suggested by Google Cloud Vision (modify as needed):</p>
+	<form method="post" class="form" enctype="multipart/form-data">
+		{{ form.hidden_tag() }}
+        {{ input(form.tags, placeholder="No suggested tags, add your own! (comma separated)", class="span7", autocomplete="off") }}
+		<div class="form-actions">
+			<div class="pull-right">
+				<button class="btn btn-success" type="submit">Select Tags</button>
+			</div>
+		</div>
+	</form>
+</div>
+{% endblock content %}
+
+{% block postscripts -%}
+{%- endblock postscripts %}

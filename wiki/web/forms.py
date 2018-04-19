@@ -2,7 +2,8 @@
     Forms
     ~~~~~
 """
-from flask_wtf import Form
+from flask_wtf import Form, FlaskForm
+from flask_wtf.file import FileField, FileRequired
 from wtforms import BooleanField
 from wtforms import TextField
 from wtforms import TextAreaField
@@ -14,6 +15,11 @@ from wiki.core import clean_url
 from wiki.web import current_wiki
 from wiki.web import current_users
 
+import os
+import io
+from google.cloud import vision
+import config
+
 
 class URLForm(Form):
     url = TextField('', [InputRequired()])
@@ -24,6 +30,48 @@ class URLForm(Form):
 
     def clean_url(self, url):
         return clean_url(url)
+
+
+class ImageForm(FlaskForm):
+    file = FileField(validators=[FileRequired()])
+    body = TextAreaField('', [InputRequired()])
+
+
+class TagImageForm(FlaskForm):
+    client = vision.ImageAnnotatorClient()
+    tags = TextField('')
+    filename = ''
+    labels = []
+
+    def set_filename(self, name):
+        self.filename = name
+
+    def get_tags(self):
+        f = os.path.join(
+            os.path.dirname(__file__),
+            config.CONTENT_DIR + '/images/' + self.filename)
+        with io.open(f, 'rb') as image_file:
+            content = image_file.read()
+
+        request = {
+            "image": {
+                "content": content
+            },
+            "features": [
+                {
+                    "type": "LABEL_DETECTION",
+                }
+            ],
+        }
+
+        result = self.client.annotate_image(request)
+        labels = result.label_annotations
+        str = ''
+        if labels:
+            for label in labels:
+                str += label.description + ','
+        str = str[:-1]
+        self.tags.data = str
 
 
 class SearchForm(Form):

@@ -59,10 +59,13 @@ def wikilink(text, url_formatter=None):
     for i in link_regex.findall(text):
         title = [i[-1] if i[-1] else i[1]][0]
         url = clean_url(i[1])
-        html_url = u"<a href='{0}'>{1}</a>".format(
-            url_formatter('wiki.display', url=url),
-            title
-        )
+        if url[:7] == 'images/':
+            html_url = u"<img src='/{0}' alt='{1}'>".format(url, title)
+        else:
+            html_url = u"<a href='{0}'>{1}</a>".format(
+                url_formatter('wiki.display', url=url),
+                title
+            )
         text = re.sub(link_regex, html_url, text, count=1)
     return text
 

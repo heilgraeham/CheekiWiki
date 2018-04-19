@@ -8,6 +8,7 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask import make_response
 from flask_login import current_user
 from flask_login import login_required
 from flask_login import login_user
@@ -18,9 +19,15 @@ from wiki.web.forms import EditorForm
 from wiki.web.forms import LoginForm
 from wiki.web.forms import SearchForm
 from wiki.web.forms import URLForm
+from wiki.web.forms import ImageForm
+from wiki.web.forms import TagImageForm
 from wiki.web import current_wiki
 from wiki.web import current_users
 from wiki.web.user import protect
+
+from werkzeug.utils import secure_filename
+
+import config
 
 
 bp = Blueprint('wiki', __name__);
@@ -40,12 +47,57 @@ def index():
     pages = current_wiki.index()
     return render_template('index.html', pages=pages)
 
+@bp.route('/images/<path:url>')
+@protect
+def image(url):
+    if url[-1] == '/':
+        response = make_response(open(config.CONTENT_DIR + "/images/" + url[:-1]).read())
+    else:
+        response = make_response(open(config.CONTENT_DIR + "/images/" + url).read())
+    response.content_type = "image/jpeg"
+    return response
+
 
 @bp.route('/<path:url>/')
 @protect
 def display(url):
     page = current_wiki.get_or_404(url)
     return render_template('page.html', page=page)
+
+
+@bp.route('/upload_image/', methods=['GET', 'POST'])
+@protect
+def upload_image():
+    form = ImageForm()
+    if form.validate_on_submit():
+        name = secure_filename(form.file.data.filename)
+        form.file.data.save(config.CONTENT_DIR + '/images/' + name)
+
+        url = name.replace('.', '_')
+        page = current_wiki.get_bare(url)
+        page.title = url
+        page.tags = ""
+        form.populate_obj(page)
+        page.body = '[[images/' + name + ']]\n\n' + page.body
+        page.save()
+
+        return redirect(url_for('wiki.tag_image', name=name))
+    return render_template('upload_image.html', form=form)
+
+
+@bp.route('/tag_image/<path:name>/', methods=['GET', 'POST'])
+@protect
+def tag_image(name):
+    url = name.replace('.', '_')
+    form = TagImageForm()
+    form.set_filename(name)
+    form.get_tags()
+    if form.validate_on_submit():
+        page = current_wiki.get(url)
+        form.populate_obj(page)
+        page.save()
+        return redirect(url_for('wiki.display', url=url))
+    return render_template('tag_image.html', form=form)
 
 
 @bp.route('/create/', methods=['GET', 'POST'])
