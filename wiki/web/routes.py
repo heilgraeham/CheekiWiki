@@ -23,7 +23,7 @@ from wiki.web import current_users
 from wiki.web.user import protect
 
 
-bp = Blueprint('wiki', __name__);
+bp = Blueprint('wiki', __name__)
 
 @bp.route('/')
 @protect
@@ -63,14 +63,55 @@ def create():
 def edit(url):
     page = current_wiki.get(url)
     form = EditorForm(obj=page)
+
+    print 0
+
+
     if form.validate_on_submit():
-        if not page:
-            page = current_wiki.get_bare(url)
-        form.populate_obj(page)
-        page.save()
-        flash('"%s" was saved.' % page.title, 'success')
-        return redirect(url_for('wiki.display', url=url))
+
+        formtags = form.data['tags'].split(',')
+        duplicateTags = checktags(formtags)
+
+        print duplicateTags
+
+        if duplicateTags:
+            flash('Please remove duplicate tags', 'error')
+            return render_template('editor.html', form=form, page=page)
+        else:
+            if not page:
+                page = current_wiki.get_bare(url)
+            form.populate_obj(page)
+            page.save()
+            flash('"%s" was saved.' % page.title, 'success')
+            return redirect(url_for('wiki.display', url=url))
+
+
+
     return render_template('editor.html', form=form, page=page)
+
+def checktags(formtags):
+    i = 0
+    while i < len(formtags):
+        formtags[i] = formtags[i].lstrip()
+        formtags[i] = formtags[i].rstrip()
+        i += 1
+
+    i = 0
+    x = 1
+    duplicateTags = 0
+    if len(formtags) > 1:
+        while i < len(formtags) - 1:
+            x = i + 1
+            while x < len(formtags):
+                if formtags[i] == formtags[x]:
+                    duplicateTags = 1
+                    x += 1
+                else:
+                    x += 1
+            i += 1
+
+
+    return duplicateTags
 
 
 @bp.route('/preview/', methods=['POST'])
